@@ -82,7 +82,7 @@ python -m opspilot.main \
 ### Run Tests
 
 ```bash
-python -m opspilot.tests.run
+python -m tests.run
 ```
 
 ## MCP Tools
