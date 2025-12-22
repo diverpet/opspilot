@@ -49,5 +49,5 @@ artifacts/**/*.jsonl
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
+# Runtime logs (not mock data logs)
+*.runtime.log

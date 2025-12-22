@@ -7,33 +7,30 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
 
-
-def get_data_dir() -> Path:
-    """Get the data directory path."""
-    # Try to find data directory relative to package
-    current = Path(__file__).parent.parent.parent.parent.parent
-    data_dir = current / "data"
-    if data_dir.exists():
-        return data_dir
-    # Fallback to current working directory
-    return Path.cwd() / "data"
-
-
-def get_runbooks_dir() -> Path:
-    """Get the runbooks directory path."""
-    current = Path(__file__).parent.parent.parent.parent.parent
-    runbooks_dir = current / "runbooks"
-    if runbooks_dir.exists():
-        return runbooks_dir
-    return Path.cwd() / "runbooks"
-
-
-def get_artifacts_dir() -> Path:
-    """Get the artifacts directory path."""
-    current = Path(__file__).parent.parent.parent.parent.parent
-    artifacts_dir = current / "artifacts"
-    artifacts_dir.mkdir(exist_ok=True)
-    return artifacts_dir
+# Import shared utilities - handle both direct imports and package imports
+try:
+    from opspilot.utils import get_data_dir, get_runbooks_dir, get_artifacts_dir
+except ImportError:
+    # Fallback for when running from MCP server context
+    def _find_project_root() -> Path:
+        """Find project root by looking for pyproject.toml."""
+        current = Path(__file__).parent.parent.parent.parent
+        while current != current.parent:
+            if (current / "pyproject.toml").exists():
+                return current
+            current = current.parent
+        return Path.cwd()
+    
+    def get_data_dir() -> Path:
+        return _find_project_root() / "data"
+    
+    def get_runbooks_dir() -> Path:
+        return _find_project_root() / "runbooks"
+    
+    def get_artifacts_dir() -> Path:
+        artifacts_dir = _find_project_root() / "artifacts"
+        artifacts_dir.mkdir(exist_ok=True)
+        return artifacts_dir
 
 
 def parse_time_range(time_range: str) -> timedelta:

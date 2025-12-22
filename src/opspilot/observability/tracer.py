@@ -7,6 +7,8 @@ from pathlib import Path
 from typing import Optional, Any, Dict, List
 from dataclasses import dataclass, asdict
 
+from ..utils import get_artifacts_dir
+
 
 @dataclass
 class TraceEvent:
@@ -29,9 +31,7 @@ class Tracer:
         self.start_time = time.time()
         
         if output_dir is None:
-            # Default to artifacts directory
-            current = Path(__file__).parent.parent.parent.parent
-            output_dir = current / "artifacts"
+            output_dir = get_artifacts_dir()
         
         self.output_dir = output_dir
         self.output_dir.mkdir(exist_ok=True)

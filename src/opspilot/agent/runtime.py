@@ -12,6 +12,7 @@ from ..llm.dummy_llm import DummyLLM
 from ..llm.openai_llm import OpenAILLM
 from ..mcp_client.client import MCPClientContext
 from ..observability.tracer import Tracer
+from ..utils import get_artifacts_dir
 
 
 def get_llm() -> BaseLLM:
@@ -41,8 +42,7 @@ class AgentRuntime:
         self.mcp_command = mcp_command
         
         if output_dir is None:
-            current = Path(__file__).parent.parent.parent.parent
-            output_dir = current / "artifacts"
+            output_dir = get_artifacts_dir()
         
         self.output_dir = output_dir
         self.output_dir.mkdir(exist_ok=True)

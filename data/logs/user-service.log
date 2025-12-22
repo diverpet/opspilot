@@ -1,0 +1,17 @@
+2024-01-15T08:00:00Z INFO Starting user-service
+2024-01-15T08:00:10Z INFO Connected to user database
+2024-01-15T09:00:00Z INFO User login: user_id=user123
+2024-01-15T10:00:00Z INFO Cache hit rate: 95%
+2024-01-15T10:25:00Z WARN Cache memory pressure: 80% used
+2024-01-15T10:26:00Z INFO Cache eviction triggered
+2024-01-15T10:27:00Z WARN Cache miss rate increased: 25%
+2024-01-15T10:28:00Z ERROR Redis connection lost
+2024-01-15T10:28:05Z WARN Falling back to database queries
+2024-01-15T10:28:10Z ERROR Database query timeout: SELECT * FROM users WHERE id=?
+2024-01-15T10:28:15Z ERROR High database load detected: 500 active queries
+2024-01-15T10:28:20Z WARN Query queue building up
+2024-01-15T10:28:30Z ERROR Slow query detected: 5000ms
+2024-01-15T10:28:45Z ERROR User authentication failed: timeout
+2024-01-15T10:29:00Z WARN Rate limiting activated: too many requests
+2024-01-15T10:29:30Z INFO Redis connection restored
+2024-01-15T10:30:00Z INFO Cache warming started

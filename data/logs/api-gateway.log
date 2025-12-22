@@ -1,0 +1,20 @@
+2024-01-15T10:00:00Z INFO Starting api-gateway service
+2024-01-15T10:00:01Z INFO Health check passed
+2024-01-15T10:15:00Z INFO Received 1000 requests in last minute
+2024-01-15T10:30:00Z WARN Connection pool running low: 45/50 connections used
+2024-01-15T10:31:00Z ERROR Connection timeout to database: exceeded 5000ms
+2024-01-15T10:31:05Z ERROR Failed to process request: connection pool exhausted
+2024-01-15T10:31:10Z ERROR Connection timeout to database: exceeded 5000ms
+2024-01-15T10:31:15Z WARN Retrying database connection (attempt 1/3)
+2024-01-15T10:31:20Z ERROR Connection timeout to database: exceeded 5000ms
+2024-01-15T10:31:25Z ERROR Failed to process request: database connection failed
+2024-01-15T10:31:30Z WARN High latency detected: p99=2500ms
+2024-01-15T10:31:35Z ERROR Exception in request handler: TimeoutException
+2024-01-15T10:31:40Z ERROR Connection pool exhausted: 50/50 connections in use
+2024-01-15T10:31:45Z ERROR Failed to acquire database connection after 10s wait
+2024-01-15T10:31:50Z WARN Circuit breaker opened for database service
+2024-01-15T10:32:00Z ERROR Request failed: CircuitBreakerOpenException
+2024-01-15T10:32:05Z INFO Circuit breaker half-open, testing connection
+2024-01-15T10:32:10Z ERROR Test connection failed: timeout
+2024-01-15T10:32:15Z WARN Circuit breaker remains open
+2024-01-15T10:33:00Z INFO Attempting connection pool recovery
