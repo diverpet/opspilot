@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "deploy_id": "deploy-2024-0115-0930",
+      "timestamp": "2024-01-15T09:30:00Z",
+      "version": "v1.8.2",
+      "summary": "Updated payment provider SDK to v3.0 with new retry logic",
+      "author": "payments-team"
+    },
+    {
+      "deploy_id": "deploy-2024-0114-1100",
+      "timestamp": "2024-01-14T11:00:00Z",
+      "version": "v1.8.1",
+      "summary": "Added async payment processing queue",
+      "author": "payments-team"
+    },
+    {
+      "deploy_id": "deploy-2024-0112-1400",
+      "timestamp": "2024-01-12T14:00:00Z",
+      "version": "v1.8.0",
+      "summary": "Major refactor of payment flow",
+      "author": "payments-team"
+    }
+  ]
+}

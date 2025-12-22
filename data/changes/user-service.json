@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "deploy_id": "deploy-2024-0115-0800",
+      "timestamp": "2024-01-15T08:00:00Z",
+      "version": "v3.1.0",
+      "summary": "Increased Redis connection pool size",
+      "author": "platform-team"
+    },
+    {
+      "deploy_id": "deploy-2024-0114-1600",
+      "timestamp": "2024-01-14T16:00:00Z",
+      "version": "v3.0.9",
+      "summary": "Added cache warming on startup",
+      "author": "user-team"
+    },
+    {
+      "deploy_id": "deploy-2024-0113-1200",
+      "timestamp": "2024-01-13T12:00:00Z",
+      "version": "v3.0.8",
+      "summary": "Optimized user lookup queries",
+      "author": "user-team"
+    }
+  ]
+}

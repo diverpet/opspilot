@@ -1,0 +1,50 @@
+{
+  "latency": [
+    {"timestamp": "2024-01-15T10:00:00Z", "value": 100},
+    {"timestamp": "2024-01-15T10:05:00Z", "value": 105},
+    {"timestamp": "2024-01-15T10:10:00Z", "value": 110},
+    {"timestamp": "2024-01-15T10:15:00Z", "value": 120},
+    {"timestamp": "2024-01-15T10:20:00Z", "value": 150},
+    {"timestamp": "2024-01-15T10:25:00Z", "value": 250},
+    {"timestamp": "2024-01-15T10:30:00Z", "value": 500},
+    {"timestamp": "2024-01-15T10:31:00Z", "value": 1500},
+    {"timestamp": "2024-01-15T10:32:00Z", "value": 2500},
+    {"timestamp": "2024-01-15T10:33:00Z", "value": 2000}
+  ],
+  "error_rate": [
+    {"timestamp": "2024-01-15T10:00:00Z", "value": 0.1},
+    {"timestamp": "2024-01-15T10:05:00Z", "value": 0.1},
+    {"timestamp": "2024-01-15T10:10:00Z", "value": 0.2},
+    {"timestamp": "2024-01-15T10:15:00Z", "value": 0.3},
+    {"timestamp": "2024-01-15T10:20:00Z", "value": 0.5},
+    {"timestamp": "2024-01-15T10:25:00Z", "value": 1.0},
+    {"timestamp": "2024-01-15T10:30:00Z", "value": 3.0},
+    {"timestamp": "2024-01-15T10:31:00Z", "value": 8.0},
+    {"timestamp": "2024-01-15T10:32:00Z", "value": 12.0},
+    {"timestamp": "2024-01-15T10:33:00Z", "value": 10.0}
+  ],
+  "cpu": [
+    {"timestamp": "2024-01-15T10:00:00Z", "value": 45},
+    {"timestamp": "2024-01-15T10:05:00Z", "value": 48},
+    {"timestamp": "2024-01-15T10:10:00Z", "value": 50},
+    {"timestamp": "2024-01-15T10:15:00Z", "value": 55},
+    {"timestamp": "2024-01-15T10:20:00Z", "value": 60},
+    {"timestamp": "2024-01-15T10:25:00Z", "value": 70},
+    {"timestamp": "2024-01-15T10:30:00Z", "value": 85},
+    {"timestamp": "2024-01-15T10:31:00Z", "value": 92},
+    {"timestamp": "2024-01-15T10:32:00Z", "value": 95},
+    {"timestamp": "2024-01-15T10:33:00Z", "value": 88}
+  ],
+  "memory": [
+    {"timestamp": "2024-01-15T10:00:00Z", "value": 60},
+    {"timestamp": "2024-01-15T10:05:00Z", "value": 62},
+    {"timestamp": "2024-01-15T10:10:00Z", "value": 65},
+    {"timestamp": "2024-01-15T10:15:00Z", "value": 68},
+    {"timestamp": "2024-01-15T10:20:00Z", "value": 72},
+    {"timestamp": "2024-01-15T10:25:00Z", "value": 75},
+    {"timestamp": "2024-01-15T10:30:00Z", "value": 78},
+    {"timestamp": "2024-01-15T10:31:00Z", "value": 80},
+    {"timestamp": "2024-01-15T10:32:00Z", "value": 82},
+    {"timestamp": "2024-01-15T10:33:00Z", "value": 80}
+  ]
+}

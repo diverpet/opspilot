@@ -1,0 +1,16 @@
+2024-01-15T09:00:00Z INFO Starting payment-service
+2024-01-15T09:00:05Z INFO Connected to payment provider API
+2024-01-15T09:30:00Z INFO Processing payment: order_id=12345
+2024-01-15T10:00:00Z INFO Payment processed successfully: order_id=12346
+2024-01-15T10:30:00Z WARN Payment provider response time: 3500ms (threshold: 2000ms)
+2024-01-15T10:30:30Z ERROR Payment provider timeout: request_id=abc123
+2024-01-15T10:30:45Z ERROR Failed to process payment: PaymentProviderTimeoutException
+2024-01-15T10:31:00Z WARN Retrying payment: order_id=12347 (attempt 1/3)
+2024-01-15T10:31:15Z ERROR Payment retry failed: timeout
+2024-01-15T10:31:30Z ERROR Payment failed after 3 retries: order_id=12347
+2024-01-15T10:31:45Z WARN Payment queue backing up: 150 pending payments
+2024-01-15T10:32:00Z ERROR Memory usage high: 85% of heap used
+2024-01-15T10:32:15Z WARN GC pause detected: 500ms
+2024-01-15T10:32:30Z ERROR OutOfMemoryError: unable to create new native thread
+2024-01-15T10:32:45Z ERROR Service degraded: payment processing suspended
+2024-01-15T10:33:00Z INFO Initiating graceful shutdown
