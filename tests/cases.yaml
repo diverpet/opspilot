@@ -1,0 +1,45 @@
+# Test Cases for OpsPilot Agent
+# Each case defines an incident scenario to test the agent's investigation capabilities
+
+cases:
+  - name: "api-gateway-high-latency"
+    description: "API Gateway experiencing high latency due to database connection issues"
+    service: "api-gateway"
+    alert: "High latency alert: api-gateway P99 latency > 2000ms for 5 minutes"
+    time_range: "30m"
+    expected:
+      tools_called:
+        - "log_search"
+        - "metric_query"
+      keywords_in_report:
+        - "latency"
+        - "connection"
+        - "deployment"
+
+  - name: "payment-service-timeout"
+    description: "Payment service experiencing timeouts and high error rates"
+    service: "payment-service"
+    alert: "Payment processing failures: error rate > 10%, timeout errors detected"
+    time_range: "1h"
+    expected:
+      tools_called:
+        - "log_search"
+        - "metric_query"
+      keywords_in_report:
+        - "timeout"
+        - "payment"
+        - "error"
+
+  - name: "user-service-cache-failure"
+    description: "User service cache failure causing high database load"
+    service: "user-service"
+    alert: "User service degraded: cache miss rate > 50%, authentication failures increasing"
+    time_range: "30m"
+    expected:
+      tools_called:
+        - "log_search"
+        - "metric_query"
+      keywords_in_report:
+        - "service"
+        - "configuration"
+        - "deployment"

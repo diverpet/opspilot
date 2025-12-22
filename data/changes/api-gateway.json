@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "deploy_id": "deploy-2024-0115-1025",
+      "timestamp": "2024-01-15T10:25:00Z",
+      "version": "v2.3.1",
+      "summary": "Updated connection pool configuration - reduced max connections from 100 to 50",
+      "author": "platform-team"
+    },
+    {
+      "deploy_id": "deploy-2024-0114-1500",
+      "timestamp": "2024-01-14T15:00:00Z",
+      "version": "v2.3.0",
+      "summary": "Added new rate limiting middleware",
+      "author": "api-team"
+    },
+    {
+      "deploy_id": "deploy-2024-0113-0900",
+      "timestamp": "2024-01-13T09:00:00Z",
+      "version": "v2.2.5",
+      "summary": "Bug fix for request timeout handling",
+      "author": "api-team"
+    }
+  ]
+}

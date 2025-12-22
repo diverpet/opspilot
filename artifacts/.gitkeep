@@ -1,0 +1,13 @@
+# Artifacts Directory
+
+This directory stores generated reports and trace files from OpsPilot runs.
+
+## Contents
+
+- `report_<timestamp>.md` - Diagnostic reports in Markdown format
+- `trace_<timestamp>.jsonl` - Trace logs in JSON Lines format
+- `ticket_<id>.md` - Generated incident tickets
+
+## Note
+
+These files are generated dynamically and are excluded from version control.
