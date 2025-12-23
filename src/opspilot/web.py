@@ -173,4 +173,4 @@ def run_web(host='0.0.0.0', port=5000, debug=False):
 
 
 if __name__ == '__main__':
-    run_web(debug=True)
+    run_web(debug=False)
