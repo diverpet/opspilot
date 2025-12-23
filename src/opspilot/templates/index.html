@@ -117,6 +117,14 @@
             transform: none;
         }
 
+        .close-btn {
+            margin-top: 20px;
+        }
+
+        .view-report-btn {
+            margin-top: 10px;
+        }
+
         .alert {
             padding: 15px;
             border-radius: 8px;
@@ -360,7 +368,7 @@
             </div>
             <div id="report-tab" class="report-content"></div>
             <div id="trace-tab" class="trace-content hidden"></div>
-            <button onclick="closeDetail()" style="margin-top: 20px;">Close</button>
+            <button onclick="closeDetail()" class="close-btn">Close</button>
         </div>
     </div>
 
@@ -418,7 +426,7 @@
                         <strong>Investigation Complete!</strong><br>
                         Root Cause: ${result.root_cause}<br>
                         Confidence: ${(result.confidence * 100).toFixed(0)}%<br>
-                        <button onclick="viewInvestigation('${result.session_id}')" style="margin-top: 10px;">View Full Report</button>
+                        <button onclick="viewInvestigation('${result.session_id}')" class="view-report-btn">View Full Report</button>
                     `;
                     
                     // Refresh the list

@@ -3,6 +3,7 @@
 import asyncio
 import os
 import json
+import logging
 from pathlib import Path
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify, send_from_directory
@@ -12,6 +13,10 @@ from .agent.runtime import AgentRuntime
 from .agent.schemas import ReportOutput
 from .utils import get_artifacts_dir
 
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__, 
             template_folder='templates',
@@ -62,7 +67,7 @@ class InvestigationManager:
                     'trace_path': str(trace_file) if trace_file.exists() else None
                 })
             except Exception as e:
-                print(f"Error parsing {report_file}: {e}")
+                logger.error(f"Error parsing {report_file}: {e}")
                 continue
         
         return investigations
@@ -87,7 +92,7 @@ class InvestigationManager:
                         if line.strip():
                             trace_events.append(json.loads(line))
             except Exception as e:
-                print(f"Error reading trace: {e}")
+                logger.error(f"Error reading trace: {e}")
         
         return {
             'session_id': session_id,
@@ -138,15 +143,13 @@ def investigate():
     
     # Run investigation asynchronously
     try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
+        async def run_investigation():
+            """Run the investigation asynchronously."""
+            runtime = AgentRuntime(mcp_command)
+            return await runtime.run(service=service, alert=alert, time_range=time_range)
         
-        runtime = AgentRuntime(mcp_command)
-        report, report_path, trace_path = loop.run_until_complete(
-            runtime.run(service=service, alert=alert, time_range=time_range)
-        )
-        
-        loop.close()
+        # Use asyncio.run() which properly manages the event loop
+        report, report_path, trace_path = asyncio.run(run_investigation())
         
         # Extract session_id from file path
         session_id = report_path.stem.replace("report_", "")
