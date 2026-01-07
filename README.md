@@ -53,13 +53,34 @@ pip install -r requirements.txt
 
 ## Usage
 
-### Start MCP Server (standalone)
+### Web Interface (Recommended)
+
+The easiest way to use OpsPilot is through the web interface:
 
 ```bash
-python -m opspilot_mcp.server --stdio
+# Start the web server
+python run_web.py
+
+# Open your browser to http://localhost:5000
 ```
 
-### Run Agent
+The web interface provides:
+- **Interactive Form**: Easy-to-use form to submit incident investigations
+- **Real-time Results**: View investigation progress and results
+- **Investigation History**: Browse past investigations and their reports
+- **Detailed Reports**: View full markdown reports and JSONL traces
+- **Example Templates**: Quick-fill forms with example scenarios
+
+![Web Interface](https://github.com/user-attachments/assets/ad529c30-f47d-4ae1-b135-c829c898c7c3)
+
+Options:
+```bash
+python run_web.py --host 0.0.0.0 --port 5000 --debug
+```
+
+### Command Line Interface
+
+For automation or scripting, use the CLI:
 
 ```bash
 # Using DummyLLM (default, no API key needed)
@@ -79,6 +100,12 @@ python -m opspilot.main \
   --alert "High latency alert: P99 > 2000ms" \
   --time-range 30m \
   --mcp-stdio "python -m opspilot_mcp.server --stdio"
+```
+
+### Start MCP Server (standalone)
+
+```bash
+python -m opspilot_mcp.server --stdio
 ```
 
 ### Run Tests

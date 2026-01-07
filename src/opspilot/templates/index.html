@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpsPilot - Production Incident Troubleshooting Agent</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .close-btn {
+            margin-top: 20px;
+        }
+
+        .view-report-btn {
+            margin-top: 10px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border-left: 4px solid #1565c0;
+        }
+
+        .alert-success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .alert-error {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #c62828;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .investigation-list {
+            margin-top: 20px;
+        }
+
+        .investigation-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid #667eea;
+        }
+
+        .investigation-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .investigation-item h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .investigation-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-high {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .badge-medium {
+            background: #fff9c4;
+            color: #f57f17;
+        }
+
+        .badge-low {
+            background: #ffccbc;
+            color: #d84315;
+        }
+
+        .report-content {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .trace-content {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .trace-event {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-left: 3px solid #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .example-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .example-btn {
+            background: #e0e0e0;
+            color: #333;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .example-btn:hover {
+            background: #d0d0d0;
+            transform: none;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚁 OpsPilot</h1>
+            <p>AI-Powered Production Incident Troubleshooting Agent</p>
+        </header>
+
+        <!-- New Investigation Form -->
+        <div class="card">
+            <h2>🔍 New Investigation</h2>
+            <form id="investigation-form">
+                <div class="form-group">
+                    <label for="service">Service Name *</label>
+                    <input type="text" id="service" name="service" required placeholder="e.g., api-gateway, payment-service">
+                    <div class="example-buttons">
+                        <button type="button" class="example-btn" onclick="setExample('api-gateway')">api-gateway</button>
+                        <button type="button" class="example-btn" onclick="setExample('payment-service')">payment-service</button>
+                        <button type="button" class="example-btn" onclick="setExample('user-service')">user-service</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="alert">Alert Description *</label>
+                    <textarea id="alert" name="alert" required placeholder="Describe the incident or alert..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="time-range">Time Range</label>
+                    <select id="time-range" name="time-range">
+                        <option value="15m">15 minutes</option>
+                        <option value="30m" selected>30 minutes</option>
+                        <option value="1h">1 hour</option>
+                        <option value="2h">2 hours</option>
+                        <option value="6h">6 hours</option>
+                        <option value="24h">24 hours</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="submit-btn">Start Investigation</button>
+            </form>
+
+            <div id="investigation-status" class="hidden"></div>
+        </div>
+
+        <!-- Past Investigations -->
+        <div class="card">
+            <h2>📋 Past Investigations</h2>
+            <div id="investigations-list" class="investigation-list">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading investigations...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Investigation Detail Modal -->
+        <div id="investigation-detail" class="card hidden">
+            <h2 id="detail-title">Investigation Details</h2>
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="showTab('report')">Report</button>
+                <button class="tab-btn" onclick="showTab('trace')">Trace</button>
+            </div>
+            <div id="report-tab" class="report-content"></div>
+            <div id="trace-tab" class="trace-content hidden"></div>
+            <button onclick="closeDetail()" class="close-btn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const examples = {
+            'api-gateway': {
+                alert: 'High latency alert: api-gateway P99 latency > 2000ms for 5 minutes'
+            },
+            'payment-service': {
+                alert: 'Payment processing failures: error rate > 10%, timeout errors detected'
+            },
+            'user-service': {
+                alert: 'User service degraded: cache miss rate > 50%, authentication failures increasing'
+            }
+        };
+
+        function setExample(service) {
+            document.getElementById('service').value = service;
+            document.getElementById('alert').value = examples[service].alert;
+        }
+
+        // Handle form submission
+        document.getElementById('investigation-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const statusDiv = document.getElementById('investigation-status');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Investigating...';
+            statusDiv.className = 'alert alert-info';
+            statusDiv.textContent = 'Investigation in progress... This may take a minute.';
+            statusDiv.classList.remove('hidden');
+            
+            const formData = {
+                service: document.getElementById('service').value,
+                alert: document.getElementById('alert').value,
+                time_range: document.getElementById('time-range').value
+            };
+            
+            try {
+                const response = await fetch('/api/investigate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.className = 'alert alert-success';
+                    statusDiv.innerHTML = `
+                        <strong>Investigation Complete!</strong><br>
+                        Root Cause: ${result.root_cause}<br>
+                        Confidence: ${(result.confidence * 100).toFixed(0)}%<br>
+                        <button onclick="viewInvestigation('${result.session_id}')" class="view-report-btn">View Full Report</button>
+                    `;
+                    
+                    // Refresh the list
+                    loadInvestigations();
+                    
+                    // Reset form
+                    document.getElementById('investigation-form').reset();
+                } else {
+                    statusDiv.className = 'alert alert-error';
+                    statusDiv.textContent = `Error: ${result.error}`;
+                }
+            } catch (error) {
+                statusDiv.className = 'alert alert-error';
+                statusDiv.textContent = `Error: ${error.message}`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Start Investigation';
+            }
+        });
+
+        // Load past investigations
+        async function loadInvestigations() {
+            const listDiv = document.getElementById('investigations-list');
+            
+            try {
+                const response = await fetch('/api/investigations');
+                const investigations = await response.json();
+                
+                if (investigations.length === 0) {
+                    listDiv.innerHTML = '<p style="text-align: center; color: #999;">No investigations yet. Start one above!</p>';
+                    return;
+                }
+                
+                listDiv.innerHTML = investigations.map(inv => {
+                    const confidence = inv.confidence.replace('%', '');
+                    const confidenceClass = confidence >= 70 ? 'badge-high' : confidence >= 40 ? 'badge-medium' : 'badge-low';
+                    
+                    return `
+                        <div class="investigation-item" onclick="viewInvestigation('${inv.session_id}')">
+                            <h3>${inv.title}</h3>
+                            <div class="investigation-meta">
+                                <span><strong>Service:</strong> ${inv.service}</span>
+                                <span><strong>Generated:</strong> ${inv.generated}</span>
+                                <span class="badge ${confidenceClass}">Confidence: ${inv.confidence}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                listDiv.innerHTML = `<p class="alert alert-error">Error loading investigations: ${error.message}</p>`;
+            }
+        }
+
+        // View investigation details
+        async function viewInvestigation(sessionId) {
+            const detailDiv = document.getElementById('investigation-detail');
+            const reportTab = document.getElementById('report-tab');
+            const traceTab = document.getElementById('trace-tab');
+            
+            detailDiv.classList.remove('hidden');
+            reportTab.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading...</p></div>';
+            traceTab.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading...</p></div>';
+            
+            // Scroll to detail
+            detailDiv.scrollIntoView({ behavior: 'smooth' });
+            
+            try {
+                const response = await fetch(`/api/investigation/${sessionId}`);
+                const investigation = await response.json();
+                
+                if (!response.ok) {
+                    reportTab.innerHTML = `<p class="alert alert-error">${investigation.error}</p>`;
+                    return;
+                }
+                
+                // Display report
+                reportTab.textContent = investigation.report;
+                
+                // Display trace
+                if (investigation.trace && investigation.trace.length > 0) {
+                    traceTab.innerHTML = investigation.trace.map(event => {
+                        const eventData = JSON.stringify(event, null, 2);
+                        return `<div class="trace-event">${eventData}</div>`;
+                    }).join('');
+                } else {
+                    traceTab.innerHTML = '<p style="color: #999;">No trace data available</p>';
+                }
+            } catch (error) {
+                reportTab.innerHTML = `<p class="alert alert-error">Error: ${error.message}</p>`;
+            }
+        }
+
+        function closeDetail() {
+            document.getElementById('investigation-detail').classList.add('hidden');
+        }
+
+        function showTab(tab) {
+            const reportTab = document.getElementById('report-tab');
+            const traceTab = document.getElementById('trace-tab');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            
+            if (tab === 'report') {
+                reportTab.classList.remove('hidden');
+                traceTab.classList.add('hidden');
+                tabButtons[0].classList.add('active');
+                tabButtons[1].classList.remove('active');
+            } else {
+                reportTab.classList.add('hidden');
+                traceTab.classList.remove('hidden');
+                tabButtons[0].classList.remove('active');
+                tabButtons[1].classList.add('active');
+            }
+        }
+
+        // Load investigations on page load
+        loadInvestigations();
+    </script>
+</body>
+</html>
